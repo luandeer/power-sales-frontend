@@ -28,6 +28,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 const formSchema = z.object({
 	name: z.string().min(2, {
 		message: ' name must be at least 2 characters.',
@@ -52,11 +53,26 @@ export default function UserForm({
 	const router = useRouter();
 
 	const { mutation } = useCreateOrUpdateTask();
+	const [expirationDate, setExpirationDate] = useState(
+		initialData?.expirationDate
+			? new Date(initialData.expirationDate)
+			: new Date()
+	);
+	// Evita el ciclo infinito al manejar dependencias de manera cuidadosa
+	useEffect(() => {
+		if (
+			initialData?.expirationDate &&
+			new Date(initialData.expirationDate).getTime() !==
+				expirationDate.getTime()
+		) {
+			setExpirationDate(new Date(initialData.expirationDate));
+		}
+	}, [initialData?.expirationDate, expirationDate]);
 
 	const defaultValues = {
 		name: initialData?.name || '',
 		description: initialData?.description || '',
-		expirationDate: initialData?.expirationDate || '',
+		expirationDate: expirationDate,
 	};
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -110,7 +126,12 @@ export default function UserForm({
 								name="expirationDate"
 								render={({ field }) => (
 									<FormItem className="flex flex-col gap-2.5">
-										<FormLabel>Date of birth</FormLabel>
+										<FormLabel>
+											Fecha de vencimiento{' '}
+											<span className="text-xs">
+												(Fecha de hoy por defecto)
+											</span>
+										</FormLabel>
 										<Popover>
 											<PopoverTrigger asChild>
 												<FormControl>
