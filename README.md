@@ -27,3 +27,6 @@ pnpm dev
 Este README ahora incluye el enlace a `localhost:3000` para mayor claridad.
 
 Extra: Se agrego una funcionalidad a nivel visual, es la eliminacion de filas a traves de los checkbox (lado del frontend). Esta funcional pero faltaria un endpoint que permita eliminar varias filas a traves de ids(lado del backend).
+
+También se documento las apis en la parte del backend.
+![alt text](image.png)
