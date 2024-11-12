@@ -81,7 +81,6 @@ export default function UserForm({
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log('user:', values);
 		try {
 			const id = initialData?.id?.toString();
 
